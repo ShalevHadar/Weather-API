@@ -15,7 +15,7 @@ export default function Form() {
 
   // then similar to await ,different syntax
 
-  const apiURL = 'http://localhost:3001/'
+  const apiURL = 'http://localhost:3001/cities'
   
   useEffect(() => {
     axios.get(apiURL).then((res) => {
