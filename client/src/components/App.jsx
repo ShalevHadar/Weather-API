@@ -10,7 +10,7 @@ export default function App() {
   return (
     <div>
       <BrowserRouter>
-        <div style={{ width: "100%", height: "100%", paddingTop: "77px" }}>
+        <div style={{ width: "100%", height: "100%", paddingTop: "100px", boxSizing: 'border-box' }}>
           <Nav />
           <Switch>
             <Route exact path="/" component={Home} />

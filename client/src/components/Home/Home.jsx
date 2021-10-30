@@ -12,17 +12,24 @@ export default function Form() {
   };
 
   const [cities, setCities] = useState([])
+  const [error, setError] = useState();
 
   // then similar to await ,different syntax
 
   const apiURL = 'http://localhost:3001/cities'
   
   useEffect(() => {
-    axios.get(apiURL).then((res) => {
-      setCities(res.data)
+    axios.get(apiURL, {
+      validateStatus:  (status) => {
+        return status < 400;
+      }
     })
-    console.log("DB poked, careful !");
-  }, [])
+    .then((res) => {
+      setCities(res.data)
+    }).catch(error => {
+      setError(error.toJSON().message);
+    })
+  }, []);
 
   return (
     <Box
@@ -33,6 +40,7 @@ export default function Form() {
     >
       <Grid container spacing={3} justifyContent="center">
         <Grid item>
+        { error ? error : (
           <Autocomplete
             disablePortal
             options={cities}
@@ -42,6 +50,8 @@ export default function Form() {
             getOptionLabel={city => city.name}
             onChange={(event, city) => onResults(city.key)}
           />
+        )}
+
         </Grid>
       </Grid>
     </Box>

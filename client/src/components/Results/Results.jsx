@@ -8,26 +8,33 @@ import { Box } from "@mui/system";
 export default function Results(props) {
   const { citykey } = useParams();
   const [days, setDays] = useState([]);
+  const [error, setError] = useState();
+
+  //const apiUrl = 'http://localhost:3001/cities?query=tel'
 
   useEffect(() => {
-    
     const locationURL = `http://localhost:3001/cities/${citykey}/forecast`
-    console.log(locationURL);
-    axios.get(locationURL).then((res) => {
+    axios.get(locationURL, {
+      validateStatus: (status) => {
+        return status < 400;
+      }
+    }).then((res) => {
       setDays(res.data);
-    });
-    console.log("hey");
+    }).catch(error => {
+      setError(error.toJSON().message)
+    })
   }, [citykey]);
 
 
   return (
     <Box >
       <Grid container rowSpacing={3} columnSpacing={{ xs: 1, sm: 1, md: 1 }} justifyContent="center">
-        {days.map((item) => (
+      {error ? error : (
+        days.map((item) => (
           <Grid item key={item.date}>
             <ForecastCard  icon={item.dayIcon} date={item.date} minTemp={item.minTemp} maxTemp={item.maxTemp}/>
           </Grid>
-        ))}
+        )))}
       </Grid>
     </Box>
   );
