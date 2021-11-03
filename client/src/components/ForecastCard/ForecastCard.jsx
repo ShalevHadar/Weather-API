@@ -3,6 +3,8 @@ import * as React from "react";
 import Moment from "react-moment";
 
 export default function ForecastCard(props) {
+
+  
   return (
     <Card>
       <CardContent>
